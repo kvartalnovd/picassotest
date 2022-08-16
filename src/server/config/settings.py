@@ -35,11 +35,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_yasg',
-    #
-    # # System common components of The Notifier
-    #
-    # # System components of The Notifier
 
+    # System common components of The Picasso Test Project
+    # The common components should contain nodal structures, such as user, client, project, etc.
+
+    # System components of The Picasso Test Project
+    'components.state_structures',
+    'components.police_department',
 ]
 
 MIDDLEWARE = [
@@ -143,6 +145,7 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
 }
 
 

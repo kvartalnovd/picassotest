@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS states (
     state_id int,
     name varchar(255) not null,
@@ -19,7 +18,7 @@ CREATE TABLE IF NOT EXISTS address_types (
     PRIMARY KEY (address_type_id)
 );
 
-CREATE TABLE IF NOT EXISTS ServiceCalls (
+CREATE TABLE IF NOT EXISTS service_calls (
     call_id int not null,
     crime_id int not null,
     original_crime_type_name varchar(255) not null,

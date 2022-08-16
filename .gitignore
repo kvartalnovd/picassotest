@@ -124,7 +124,5 @@ media/
 # Logs files
 /src/storage/logs/
 
-
-/static/admin/
-/static/drf-yasg/
-/static/rest_framework/
+# auto-generated static files by django collectstatic command with init docker container
+/src/static/
