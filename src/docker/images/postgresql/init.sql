@@ -1,25 +1,25 @@
 CREATE TABLE IF NOT EXISTS states (
-    state_id int,
-    name varchar(255) not null,
+    state_id SERIAL,
+    name varchar(255) not null unique,
     PRIMARY KEY(state_id)
 );
 
 CREATE TABLE IF NOT EXISTS cities (
-    city_id int,
-    name varchar(255) not null,
+    city_id SERIAL,
+    name varchar(255) not null unique,
     state int not null,
     PRIMARY KEY (city_id),
     FOREIGN KEY (state) REFERENCES states (state_id)
 );
 
 CREATE TABLE IF NOT EXISTS address_types (
-    address_type_id int,
-    name varchar(255) not null,
+    address_type_id SERIAL,
+    name varchar(255) not null unique,
     PRIMARY KEY (address_type_id)
 );
 
 CREATE TABLE IF NOT EXISTS service_calls (
-    call_id int not null,
+    call_id SERIAL,
     crime_id int not null,
     original_crime_type_name varchar(255) not null,
     report_date date not null,
