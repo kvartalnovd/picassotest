@@ -1,13 +1,15 @@
-# База данных
+# База данных: Подключение
 Для проверки работы базы данных, после запуска docker'а можно пойти двумя способами:
 Подключиться к БД через PgAdmin4 или через легкий Adminer
 
 > На прод. версии, оба варианта, естественно, либо были бы заблокированны, либо контроллировались бы высшими силами
 
+
 ## Содержание
   1. [Содержание](#Содержание)
   2. [Первый способ: PgAdmin](#Первый-способ-PgAdmin)
   3. [Второй способ: Adminer](#Второй-способ-Adminer)
+  4. [Третий способ: Django admin](#Третий-способ-Django-admin)
 
 
 ## Первый способ: PgAdmin
@@ -33,8 +35,6 @@
 **Username:** user
 
 **Password:** password
-
-***
 
 ![PgAdmin | Server > Connection](/docs/images/pgadmin_connection.png "PgAdmin | connection to server | Server > Connection")
 
@@ -64,10 +64,14 @@ Adminer гораздо проще:
 
 ![Adminer | Access to the server was obtained](/docs/images/adminer_access.png "Adminer | Access to the server was obtained")
 
+
+## Третий способ: Django admin
+
+1. Заходим `http://localhost/admin`
+2. Вводим логин/пароль: admin/admin
+
 <br />
 
-> **Пред.**: [Отчет о выполненной работы](work_report.md)
+> **Пред.**: [Быстрый старт: Сборка и запуск программы](quick_start.md)
 >
 > **Главная**: [README.md](/README.md)
->
-> **Далее** [---](work_report.md)

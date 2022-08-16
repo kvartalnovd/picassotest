@@ -39,7 +39,7 @@
 ![Схема базы данных](/docs/images/db_schema.png "Схема базы данных - drawsql.app")
 
 > Для отображения БД был использован сервис drawsql.app [(Таблица на drawsql.app)](https://drawsql.app/teams/kvartalnovd/diagrams/picasso), 
-> который нарисовал схему по файлу [init_db_service_calls.sql](/src/docker/images/postgresql/sql/init_db_service_calls.sql)
+> который нарисовал схему по файлу [init.sql](/src/docker/images/postgresql/init.sql)
 
 
 > Для создания моделей Django по legacy DB, изначально использовался иснтрумент django ` python manage.py inspectdb > models.py `.
