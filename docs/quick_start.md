@@ -8,6 +8,12 @@
 
 ## Первый запуск
 
+Клонируем репозиторий:
+
+```bash
+git clone https://github.com/kvartalnovd/picassotest.git && cd picassotest
+```
+
 Для управления Docker контейнерами создан ряд скриптов
 
 Для простого запуска используем команду `./src/docker/bin/start`

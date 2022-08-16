@@ -40,6 +40,8 @@
 #### 1. [Отчет о выполненной работе](docs/work_report.md)
 #### 2. [Быстрый старт: Сборка и запуск программы](docs/quick_start.md)
 #### 3. [База данных: Подключение](docs/database.md)
+#### 4. [Использование API](docs/using_api.md)
+#### 5. [Запуск парсера CSV](docs/launch_csv_parser.md)
  
 
 ## LICENSE
