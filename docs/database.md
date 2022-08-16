@@ -67,8 +67,8 @@ Adminer гораздо проще:
 
 ## Третий способ: Django admin
 
-1. Заходим `http://localhost/admin`
-2. Вводим логин/пароль: admin/admin
+1. Заходим на `http://localhost/admin`
+2. Вводим логин/пароль: **admin** / **admin**
 
 <br />
 
