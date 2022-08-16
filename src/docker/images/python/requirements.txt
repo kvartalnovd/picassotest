@@ -8,3 +8,4 @@ daphne==3.0.2
 django-filter==21.1
 numpy==1.23.1
 pandas==1.4.3
+SQLAlchemy==1.4.40
