@@ -51,7 +51,8 @@ class ProgressBar:
         progress_bar_line = f'{ProgressBar.LOADING_ELEMENT * completed_progress_bar_parts}' \
                             f'{" " * (uncompleted_progress_bar_parts + 1)}'
         percent_status = f'{loading_percentage}%{" " * (6 - len(str(loading_percentage)))}'
-        upload_speed_status = f'{"" * (10 - len(str(self.__upload_speed)))}{self.__upload_speed} ' \
+        upload_speed_status = f'{"" * (10 - len(str(self.__upload_speed)))}' \
+                              f'{self.__upload_speed if self.__upload_speed != .0 else "*.*"} ' \
                               f'{self.__frequency_value} ' \
                               f'({completed_elements} / {self.__total_elements_number})'
         if loading_percentage % ProgressBar.CHANGE_FREQUENCY_PER_PERCENT == .0:
@@ -66,7 +67,7 @@ class ProgressBar:
 
     @staticmethod
     def init_label(label: str) -> None:
-        print(f'\n [Loading]    > {label}{" " * (ProgressBar.LOADING_ELEMENT_NUMBER - len(label))} <')
+        print(f'\n [Loading]    > {label}{" " * (ProgressBar.LOADING_ELEMENT_NUMBER - len(label) + 2)} <')
 
     def __change_loader_icon(self) -> None:
         self.__loader_icon = choice(ProgressBar.LOADER_SYMBOLS)
@@ -88,6 +89,8 @@ class StatusManager:
         if start_timer_immediately:
             self.__progressbar.init_label(self.__label)
 
+        self.__errors_dict: dict = {}
+
     def update(self) -> None:
         if not isinstance(self.__start_time, datetime):
             self.__start_time = datetime.now()
@@ -98,10 +101,27 @@ class StatusManager:
     def reset_timer(self) -> None:
         self.__start_time = datetime.now()
 
-    def get_result_status(self) -> str:
+    def get_result_status(self, result_title: Optional[str] = None, element_label: str = 'element') -> str:
         result_delta = datetime.now() - self.__start_time
         total_time_value = str(timedelta(seconds=result_delta.seconds))
-        return f'{self.__completed_elements} elements processed in {total_time_value}'
+        element_label_plural = f'{element_label}s'
+        errors_types_message = ''.join([f'{error_numbers} "{error_name}" type error'
+                                        for error_name, error_numbers in self.__errors_dict.items()])
+        errors_status = f'Errors found during operation: {errors_types_message}' \
+            if self.__errors_dict \
+            else "no errors were detected during the process"
+
+        return f'{result_title + ": " if result_title else ""}' \
+               f'{self.__completed_elements} ' \
+               f'{element_label_plural if self.__completed_elements > 1 else element_label} ' \
+               f'processed in {total_time_value} | ' \
+               f'{errors_status}'
+
+    def error_report(self, error_name: str) -> None:
+        if self.__errors_dict[error_name]:
+            self.__errors_dict[error_name] += 1
+        else:
+            self.__errors_dict[error_name] = 1
 
 
 class StatusService:
@@ -111,7 +131,7 @@ class StatusService:
 
     def log(self, message: str) -> None:
         dt = datetime.now()
-        app_message = f' {APP_NAME} [{dt.strftime("%d.%m.%Y %H:%M:%S")}] > {message}'
+        app_message = f' <{APP_NAME}> [{dt.strftime("%d.%m.%Y %H:%M:%S")}] > {message}'
         print(app_message)
         self.__logger.info(message)
 

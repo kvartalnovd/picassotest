@@ -8,6 +8,8 @@ class States(models.Model):
     class Meta:
         managed = True
         db_table = 'states'
+        verbose_name = "state"
+        verbose_name_plural = "states"
 
     def __str__(self) -> str:
         return f'{self.name}'
@@ -21,6 +23,8 @@ class Cities(models.Model):
     class Meta:
         managed = True
         db_table = 'cities'
+        verbose_name = "city"
+        verbose_name_plural = "cities"
 
     def __str__(self) -> str:
         return f'{self.name}'

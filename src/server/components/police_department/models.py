@@ -9,6 +9,8 @@ class AddressTypes(models.Model):
     class Meta:
         managed = True
         db_table = 'address_types'
+        verbose_name = "address type"
+        verbose_name_plural = "address types"
 
     def __str__(self) -> str:
         return f'{self.name}'
@@ -16,7 +18,7 @@ class AddressTypes(models.Model):
 
 class ServiceCalls(models.Model):
     call_id = models.IntegerField(primary_key=True)
-    crime_id = models.IntegerField()
+    crime_id = models.IntegerField(unique=True)
     original_crime_type_name = models.CharField(max_length=255)
     report_date = models.DateField()
     offense_date = models.DateField()
@@ -30,3 +32,5 @@ class ServiceCalls(models.Model):
     class Meta:
         managed = True
         db_table = 'service_calls'
+        verbose_name = "service call"
+        verbose_name_plural = "service calls"

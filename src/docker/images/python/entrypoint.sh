@@ -10,6 +10,8 @@ cd "$(dirname "$(dirname "$(dirname "${SCRIPT_DIR}")")")"/server || exit;
 
 python manage.py makemigrations --noinput
 python manage.py migrate --noinput
+python manage.py migrate --fake sessions zero
+python manage.py migrate --fake-initial
 python manage.py collectstatic --noinput
 
 if ! [[-z "${DEBUG}"]]; then

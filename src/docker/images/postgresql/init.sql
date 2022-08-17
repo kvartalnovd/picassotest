@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS address_types (
 
 CREATE TABLE IF NOT EXISTS service_calls (
     call_id SERIAL,
-    crime_id int not null,
+    crime_id int not null unique,
     original_crime_type_name varchar(255) not null,
     report_date date not null,
     offense_date date not null,

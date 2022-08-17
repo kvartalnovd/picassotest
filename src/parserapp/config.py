@@ -2,7 +2,7 @@ import os
 
 from pathlib import Path
 
-APP_NAME = 'ParserAPP'
+APP_NAME = 'app.parser:picasso.io'
 
 PARSER_APP_DIR = Path(__file__).resolve().parent
 CONTENT_DIR = PARSER_APP_DIR.joinpath('content')
@@ -15,7 +15,7 @@ PG_DBNAME = os.environ.get("POSTGRES_DB", None)
 PG_PORT = os.environ.get("POSTGRES_PORT", "5432")
 PG_USERNAME = os.environ.get("POSTGRES_USER", "user")
 PG_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "password")
-
+PG_CONTAINER_NAME = 'db'
 
 # Init Data
 INIT_SERVICE_CALL_DATA = CONTENT_DIR.joinpath('police-department-calls-for-service.csv.zip')
