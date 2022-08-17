@@ -78,6 +78,9 @@ class ServiceCallParser:
                 )
             except UniqueViolation:
                 service_call_status_manager.error_report('UniqueViolation')
+            except KeyboardInterrupt:
+                break
+
             service_call_status_manager.update()
 
         result_status = service_call_status_manager.get_result_status(result_title='Upload completed successfully',
