@@ -76,4 +76,4 @@ Adminer гораздо проще:
 >
 > **Главная**: [README.md](/README.md)
 > 
-> **Далее**: [Использование API](using_api.md)
+> **Далее**: [Запуск парсера CSV](launch_csv_parser.md)
