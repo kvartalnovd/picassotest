@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from pathlib import Path
 from random import choice
+from typing import Optional
 
 from config import APP_NAME
 
@@ -20,7 +21,7 @@ def get_logger(log_file: Path) -> logging.Logger:
 class ProgressBar:
     LOADING_ELEMENT = '█'
     LOADING_ELEMENT_NUMBER = 50
-    SPEED_CHECK_FREQUENCY_SECONDS = 2
+    SPEED_CHECK_FREQUENCY_SECONDS = 1
     CHANGE_FREQUENCY_PER_PERCENT = 1.0
     LOADER_SYMBOLS = tuple('😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 😇 🥰 😍 🤩 😘 😗 😚 😙 😋 😛 😜 🤪 😝 🤑 🤗 🤭 🤫 🤔 🤐 '
                            '🤨 😐 😑 😶 😏 😒 🙄 😬 🤥 😌 😔 😪 🤤 😴 😷 🤒 🤕 🤢 🤮 🤧 🥵 🥶 🥴 😵 🤯 🤠 🥳 😎 🤓 🧐 😕 '
@@ -49,44 +50,71 @@ class ProgressBar:
         uncompleted_progress_bar_parts = ProgressBar.LOADING_ELEMENT_NUMBER - completed_progress_bar_parts
         progress_bar_line = f'{ProgressBar.LOADING_ELEMENT * completed_progress_bar_parts}' \
                             f'{" " * (uncompleted_progress_bar_parts + 1)}'
-        percent_status = f'{loading_percentage}%{" " * (7 - len(str(loading_percentage)))}'
+        percent_status = f'{loading_percentage}%{" " * (6 - len(str(loading_percentage)))}'
         upload_speed_status = f'{"" * (10 - len(str(self.__upload_speed)))}{self.__upload_speed} ' \
                               f'{self.__frequency_value} ' \
                               f'({completed_elements} / {self.__total_elements_number})'
         if loading_percentage % ProgressBar.CHANGE_FREQUENCY_PER_PERCENT == .0:
             self.__change_loader_icon()
-        print(f'\r {self.__loader_icon} | {progress_bar_line} | {percent_status} | ~ {upload_speed_status}', end='')
+        result_delta = datetime.now() - self.__start_time
+        time_status_value = str(timedelta(seconds=result_delta.seconds))
+        print(f'\r [{time_status_value}] {self.__loader_icon} '
+              f'| {progress_bar_line} '
+              f'| {percent_status} '
+              f'| ~ {upload_speed_status}',
+              end='')
+
+    @staticmethod
+    def init_label(label: str) -> None:
+        print(f'\n [Loading]    > {label}{" " * (ProgressBar.LOADING_ELEMENT_NUMBER - len(label))} <')
 
     def __change_loader_icon(self) -> None:
         self.__loader_icon = choice(ProgressBar.LOADER_SYMBOLS)
 
 
-class StatusService:
+class StatusManager:
 
-    def __init__(self, log_file: Path, total_elements_number: int) -> None:
+    def __init__(self, total_elements_number: int, label: str, start_timer_immediately: bool = True) -> None:
+        self.__label = label
         self.__total_elements_number: int = total_elements_number
-        self.__start_time: datetime = datetime.now()
         self.__completed_elements: int = 0
+
+        self.__start_time: Optional[datetime] = datetime.now() if start_timer_immediately else None
         self.__progressbar = ProgressBar(
             total_elements_number=self.__total_elements_number,
             start_time=self.__start_time
         )
+
+        if start_timer_immediately:
+            self.__progressbar.init_label(self.__label)
+
+    def update(self) -> None:
+        if not isinstance(self.__start_time, datetime):
+            self.__start_time = datetime.now()
+            self.__progressbar.init_label(self.__label)
+        self.__completed_elements += 1
+        self.__progressbar.update(self.__completed_elements)
+
+    def reset_timer(self) -> None:
+        self.__start_time = datetime.now()
+
+    def get_result_status(self) -> str:
+        result_delta = datetime.now() - self.__start_time
+        total_time_value = str(timedelta(seconds=result_delta.seconds))
+        return f'{self.__completed_elements} elements processed in {total_time_value}'
+
+
+class StatusService:
+
+    def __init__(self, log_file: Path) -> None:
         self.__logger = get_logger(log_file)
 
     def log(self, message: str) -> None:
         dt = datetime.now()
-        app_message = f' {APP_NAME} [{dt.strftime("%x")}] > {message}'
+        app_message = f' {APP_NAME} [{dt.strftime("%d.%m.%Y %H:%M:%S")}] > {message}'
         print(app_message)
         self.__logger.info(message)
 
-    def start(self) -> None:
-        self.timer_reset()
-        self.update()
-
-    def update(self) -> None:
-
-        self.__completed_elements += 1
-        self.__progressbar.update(self.__completed_elements)
-
-    def timer_reset(self) -> None:
-        self.__start_time = datetime.now()
+    @staticmethod
+    def get_status_manager(total_elements_number: int, label: str) -> StatusManager:
+        return StatusManager(total_elements_number, label)

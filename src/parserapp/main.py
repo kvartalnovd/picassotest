@@ -22,22 +22,25 @@ class ServiceCallParser:
         self.__csv_parser = CsvParser(csv_file=config.INIT_SERVICE_CALL_DATA)
         self.__status_service = StatusService(
             log_file=ServiceCallParser.LOG_FILE,
-            total_elements_number=self.__csv_parser.row_count()
         )
 
     def run(self) -> None:
         print('\n')
-        self.__status_service.log(f'Starting uploading {self.__csv_parser.row_count()} rows to database')
-        print('\n')
-        self.__status_service.timer_reset()
+        self.__status_service.log(f'Start uploading {self.__csv_parser.row_count()} rows into the database')
+        states_handling_status_manager = self.__status_service.get_status_manager(
+            total_elements_number=self.__csv_parser.row_count(),
+            label='States Uploading to Database'
+        )
+
         row_count = 0
         for index, row in self.__csv_parser.df.iterrows():
             row_count += 1
-            self.__status_service.update()
+            states_handling_status_manager.update()
 
         print('\n')
-        self.__status_service.log(f'Upload completed: {row_count} rows of data loaded')
-        print('\n')
+        self.__status_service.log(f'Upload completed successfully: {row_count} rows of data loaded')
+        result_status = states_handling_status_manager.get_result_status()
+        self.__status_service.log(result_status)
 
     def __check_df(self) -> None:
         if not self.__csv_parser.is_columns_eq_to(ServiceCallParser.SERVICE_CALL_COLUMNS):
