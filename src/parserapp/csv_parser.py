@@ -21,10 +21,10 @@ class CsvParser:
 
     @staticmethod
     def load_normalized_dataframe(csv_file: Path):
-        df = pd.read_csv(csv_file, nrows=200000)
+        df = pd.read_csv(csv_file, nrows=1000)
 
         # Normalize df's column names
         old_column_names = list(df.columns)
-        new_column_names = list(map(lambda x: ''.join([col.capitalize() for col in str(x).split()]), df.columns))
+        new_column_names = list(map(lambda x: x.lower().replace(' ', '_'), df.columns))
         df.rename(columns=dict(zip(old_column_names, new_column_names)), inplace=True)
         return df
