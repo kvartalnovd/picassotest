@@ -21,7 +21,7 @@ class CsvParser:
 
     @staticmethod
     def load_normalized_dataframe(csv_file: Path):
-        df = pd.read_csv(csv_file)
+        df = pd.read_csv(csv_file, nrows=10000)
 
         # Normalize df's column names
         old_column_names = list(df.columns)
